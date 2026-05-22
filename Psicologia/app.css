@@ -1,0 +1,494 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ==========================================
+   SISTEMA DE DISEÑO Y VARIABLES (TEMAS)
+   ========================================== */
+:root {
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Colores de marca - Modo Claro */
+  --bg-primary: #FDFBF7;      /* Warm White */
+  --bg-secondary: #F7F4EB;    /* Warm Soft Beige */
+  --bg-tertiary: #FFFFFF;     /* Pure White */
+  
+  --text-primary: #2C3E50;    /* Deep Slate */
+  --text-secondary: #5A6B7C;  /* Muted Blue-Gray */
+  --text-muted: #8E9CA8;      /* Light Gray-Slate */
+
+  --color-accent-blue: #4A6B82;  /* Calming Slate Blue */
+  --color-accent-blue-light: #E8F1F5;
+  --color-accent-green: #8FA89B; /* Sage Green */
+  --color-accent-green-light: #EBF2EE;
+  --color-accent-peach: #E3A897; /* Terracotta/Peach */
+  --color-accent-peach-light: #FBF0EC;
+
+  --border-color: #E2E8F0;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 25px -5px rgba(74, 107, 130, 0.08), 0 8px 10px -6px rgba(74, 107, 130, 0.05);
+  --shadow-premium: 0 20px 40px -15px rgba(44, 62, 80, 0.08);
+
+  --glass-bg: rgba(253, 251, 247, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(74, 107, 130, 0.05);
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+/* Variables para Modo Oscuro */
+[data-theme="dark"] {
+  --bg-primary: #0F172A;      /* Dark Slate */
+  --bg-secondary: #1E293B;    /* Soft Navy */
+  --bg-tertiary: #1E293B;     /* Slate Card */
+  
+  --text-primary: #F8FAFC;    /* Soft White */
+  --text-secondary: #CBD5E1;  /* Muted Gray */
+  --text-muted: #64748B;      /* Darker Slate Gray */
+
+  --color-accent-blue: #38BDF8;  /* Vivid Sky Blue */
+  --color-accent-blue-light: #0C4A6E;
+  --color-accent-green: #34D399; /* Vivid Sage Green */
+  --color-accent-green-light: #064E3B;
+  --color-accent-peach: #F87171; /* Vivid Peach/Coral */
+  --color-accent-peach-light: #7F1D1D;
+
+  --border-color: #334155;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   ESTILOS GENERALES Y CONFIGURACIÓN
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-blue) var(--bg-secondary);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: var(--transition-smooth);
+}
+
+h1, h2, h3, h4, .serif-font {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Personalización del Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-blue);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-green);
+}
+
+/* ==========================================
+   ESTILOS DE MAQUETACIÓN E INTERFAZ PREMIUM
+   ========================================== */
+
+/* Navegación SPA */
+.navbar-scrolled {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Clases de Glassmorphism */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+  transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-premium);
+  border-color: var(--color-accent-blue);
+}
+
+/* Botones Premium */
+.btn-primary {
+  background-color: var(--color-accent-blue);
+  color: #FFFFFF;
+  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 14px 0 rgba(74, 107, 130, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-green);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(143, 168, 155, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--color-accent-blue-light);
+  color: var(--color-accent-blue);
+  font-weight: 500;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--color-accent-blue);
+  transform: translateY(-2px);
+}
+
+/* Transiciones entre secciones SPA */
+.spa-section {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.spa-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================
+   SISTEMA DE CALENDARIO PERSONALIZADO
+   ========================================== */
+.calendar-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-weight: 500;
+  position: relative;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background-color: var(--color-accent-blue-light);
+  color: var(--color-accent-blue);
+  transform: scale(1.05);
+}
+
+.calendar-day.selected {
+  background-color: var(--color-accent-blue) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 10px rgba(74, 107, 130, 0.3);
+}
+
+.calendar-day.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.calendar-day.has-appointments::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-accent-peach);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 6px;
+}
+
+.time-slot {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-tertiary);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-align: center;
+  font-weight: 500;
+}
+
+.time-slot:hover:not(.booked) {
+  border-color: var(--color-accent-blue);
+  background-color: var(--color-accent-blue-light);
+  color: var(--color-accent-blue);
+}
+
+.time-slot.selected {
+  background-color: var(--color-accent-blue) !important;
+  border-color: var(--color-accent-blue) !important;
+  color: #FFFFFF !important;
+}
+
+.time-slot.booked {
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* ==========================================
+   PORTAL DE VIDEOLLAMADA (SALA VIRTUAL)
+   ========================================== */
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .video-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.video-container {
+  aspect-ratio: 16/9;
+  background-color: #0F172A;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--border-color);
+}
+
+.video-container.active-speaker {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 15px rgba(74, 107, 130, 0.4);
+}
+
+.video-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* Espejo para cámara frontal */
+}
+
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF;
+}
+
+.video-label {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================
+   DASHBOARD ADMINISTRATIVO Y GRÁFICOS SVG
+   ========================================== */
+.admin-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.admin-sidebar-item:hover, .admin-sidebar-item.active {
+  background-color: var(--color-accent-blue-light);
+  color: var(--color-accent-blue);
+}
+
+.dashboard-stat-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Barras estadísticas SVG interactivos */
+.chart-bar {
+  fill: var(--color-accent-blue);
+  transition: fill 0.3s ease, height 0.5s ease-out;
+  cursor: pointer;
+}
+
+.chart-bar:hover {
+  fill: var(--color-accent-green);
+}
+
+/* Círculo de porcentaje */
+.circle-progress {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+/* ==========================================
+   ANIMACIONES Y EXTRAS PREMIUM
+   ========================================== */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 4px 30px rgba(34, 197, 94, 0.6);
+  }
+}
+
+.pulse-animation {
+  animation: pulse-slow 3s infinite ease-in-out;
+}
+
+/* Botón flotante de WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #25D366;
+  color: #FFFFFF;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  transition: var(--transition-smooth);
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1) rotate(10deg);
+  background-color: #128C7E;
+}
+
+/* Animaciones de entrada general */
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo para las pestañas de "Sobre mí" */
+.tab-btn {
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.tab-btn.active {
+  border-color: var(--color-accent-blue);
+  color: var(--color-accent-blue);
+  font-weight: 600;
+}
+
+/* Pasarela de pago animada */
+.payment-step {
+  display: none;
+}
+.payment-step.active {
+  display: block;
+  animation: fadeIn 0.4s ease-out;
+}
