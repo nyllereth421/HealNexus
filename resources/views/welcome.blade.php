@@ -41,7 +41,7 @@
   </script>
   
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="app.css">
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -532,11 +532,11 @@
           </div>
         </div>
 
-        <!-- Lado Derecho: Formulario de Paciente (Paso 2) -->
+        <!-- Lado Derecho: Formulario de Reserva -->
         <div class="lg:col-span-4 bg-white dark:bg-brand-cardDark rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 space-y-6">
           <h3 class="text-lg font-bold flex items-center gap-2 text-slate-700 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-4">
-            <i data-lucide="user-check" class="w-5 h-5 text-brand-green"></i>
-            2. Datos de Consulta
+            <i data-lucide="calendar" class="w-5 h-5 text-brand-blue"></i>
+            Reserva tu cita
           </h3>
 
           <form id="booking-form" class="space-y-4">
@@ -573,7 +573,6 @@
               <textarea id="booking-reason" rows="3" placeholder="Ej. Siento mucho estrés laboral..." class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-blue resize-none"></textarea>
             </div>
 
-            <!-- Resumen de Cita -->
             <div id="booking-summary-box" class="hidden p-4 rounded-xl bg-brand-blue-light dark:bg-sky-950 text-slate-700 dark:text-sky-300 text-xs space-y-1">
               <span class="block font-bold text-brand-blue dark:text-sky-300 uppercase tracking-widest text-[10px] mb-1">Detalle de tu reserva</span>
               <p><strong>Fecha:</strong> <span id="summary-date">21/05/2026</span></p>
@@ -955,6 +954,31 @@
 
     <!-- 7. PANEL ADMINISTRATIVO (DASHBOARD) -->
     <section id="admin" class="spa-section space-y-8 py-8">
+      <div id="admin-login-card" class="bg-white dark:bg-brand-cardDark rounded-3xl shadow-lg border border-slate-200 dark:border-slate-800 p-8 max-w-3xl mx-auto">
+        <div class="max-w-xl mx-auto space-y-4 text-center">
+          <span class="text-brand-peach dark:text-red-400 uppercase tracking-widest text-xs font-bold block">Acceso Seguro</span>
+          <h2 class="text-3xl font-serif text-slate-800 dark:text-white">Inicia sesión para ver el Dashboard</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Ingresa tus credenciales administrativas para acceder a la gestión de citas, pacientes y horarios.</p>
+        </div>
+        <form id="admin-login-form" class="mt-8 space-y-4 max-w-md mx-auto">
+          <div>
+            <label for="admin-login-user" class="block text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">Usuario</label>
+            <input id="admin-login-user" type="text" autocomplete="username" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 focus:outline-none focus:border-brand-blue" required>
+          </div>
+          <div>
+            <label for="admin-login-pass" class="block text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">Contraseña</label>
+            <input id="admin-login-pass" type="password" autocomplete="current-password" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 focus:outline-none focus:border-brand-blue" required>
+          </div>
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span id="admin-login-error" class="text-rose-600 dark:text-rose-300 hidden"></span>
+            <span>Usuario de prueba: admin</span>
+          </div>
+          <button type="submit" class="btn-primary w-full justify-center text-sm py-3">
+            <span>Ingresar al Dashboard</span>
+          </button>
+        </form>
+      </div>
+      <div id="admin-panel-container" class="hidden">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div>
           <span class="text-brand-peach dark:text-red-400 uppercase tracking-widest text-xs font-bold block">Consola Profesional</span>
@@ -1277,6 +1301,7 @@
 
         </div>
       </div>
+      </div>
     </section>
 
     <!-- 9. TESTIMONIOS -->
@@ -1560,6 +1585,5 @@
   <!-- ==========================================
      SCRIPTS DE APLICACIÓN
      ========================================== -->
-  <script src="app.js"></script>
 </body>
 </html>

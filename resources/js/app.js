@@ -1,3 +1,5 @@
+import './bootstrap';
+
 /* ==========================================================================
    STATE ENGINE & LOCAL STORAGE DATABASE
    ========================================================================== */
@@ -7,7 +9,13 @@ const STORAGE_KEYS = {
   PATIENTS: "nyllereth_db_patients",
   BLOCKED_DATES: "nyllereth_db_blocked_dates",
   CONFIG: "nyllereth_db_config",
-  BLOG: "nyllereth_db_blog"
+  BLOG: "nyllereth_db_blog",
+  ADMIN_SESSION: "nyllereth_admin_session"
+};
+
+const ADMIN_CREDENTIALS = {
+  username: "admin",
+  password: "consulta123"
 };
 
 // Configuración de inicio por defecto
@@ -148,6 +156,9 @@ function initLocalStorageDB() {
   if (!localStorage.getItem(STORAGE_KEYS.APPOINTMENTS)) {
     localStorage.setItem(STORAGE_KEYS.APPOINTMENTS, JSON.stringify(DEFAULT_APPOINTMENTS));
   }
+  if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([]));
+  }
   
   // Generar la tabla de pacientes deduplicados a partir de las citas
   rebuildPatientsListFromAppointments();
@@ -188,6 +199,61 @@ function resetLocalStorageDB() {
   alert("Base de datos local restablecida con éxito a los valores de demostración.");
   window.location.reload();
 }
+
+function isAdminAuthenticated() {
+  return localStorage.getItem(STORAGE_KEYS.ADMIN_SESSION) === ADMIN_CREDENTIALS.username;
+}
+
+function showAdminLogin() {
+  const loginCard = document.getElementById("admin-login-card");
+  const panel = document.getElementById("admin-panel-container");
+  const logoutBtn = document.getElementById("admin-logout-btn");
+  if (loginCard) loginCard.classList.remove("hidden");
+  if (panel) panel.classList.add("hidden");
+  if (logoutBtn) logoutBtn.classList.add("hidden");
+}
+
+function showAdminPanel() {
+  const loginCard = document.getElementById("admin-login-card");
+  const panel = document.getElementById("admin-panel-container");
+  const logoutBtn = document.getElementById("admin-logout-btn");
+  if (loginCard) loginCard.classList.add("hidden");
+  if (panel) panel.classList.remove("hidden");
+  if (logoutBtn) logoutBtn.classList.remove("hidden");
+  renderAdminPanel();
+}
+
+function handleAdminLogin(event) {
+  event.preventDefault();
+  const usernameInput = document.getElementById("admin-login-user").value.trim();
+  const passwordInput = document.getElementById("admin-login-pass").value.trim();
+  const errorEl = document.getElementById("admin-login-error");
+
+  if (usernameInput === ADMIN_CREDENTIALS.username && passwordInput === ADMIN_CREDENTIALS.password) {
+    localStorage.setItem(STORAGE_KEYS.ADMIN_SESSION, ADMIN_CREDENTIALS.username);
+    if (errorEl) {
+      errorEl.classList.add("hidden");
+      errorEl.innerText = "";
+    }
+    showAdminPanel();
+    window.location.hash = "admin";
+  } else {
+    if (errorEl) {
+      errorEl.classList.remove("hidden");
+      errorEl.innerText = "Usuario o contraseña incorrectos.";
+    }
+  }
+}
+
+function logoutAdmin() {
+  localStorage.removeItem(STORAGE_KEYS.ADMIN_SESSION);
+  showAdminLogin();
+  if (window.location.hash.substring(1) === "admin") {
+    window.location.hash = "home";
+  }
+}
+
+// Patient authentication removed: booking remains public and only the admin dashboard requires login.
 
 
 /* ==========================================================================
@@ -234,7 +300,11 @@ function handleSPARouting() {
   if (cleanRoute === "reservar") {
     setupBookingCalendar();
   } else if (cleanRoute === "admin") {
-    renderAdminPanel();
+    if (isAdminAuthenticated()) {
+      showAdminPanel();
+    } else {
+      showAdminLogin();
+    }
   } else if (cleanRoute === "blog") {
     renderBlogPosts();
   } else if (cleanRoute === "sala-virtual") {
@@ -450,15 +520,20 @@ function handleBookingSubmit(e) {
     alert("Por favor, selecciona una fecha y una hora del calendario de citas.");
     return;
   }
-  
+
   const service = document.getElementById("booking-service").value;
-  const name = document.getElementById("booking-name").value;
-  const whatsapp = document.getElementById("booking-whatsapp").value;
-  const email = document.getElementById("booking-email").value;
-  const reason = document.getElementById("booking-reason").value;
+  const name = document.getElementById("booking-name").value.trim();
+  const whatsapp = document.getElementById("booking-whatsapp").value.trim();
+  const email = document.getElementById("booking-email").value.trim();
+  const reason = document.getElementById("booking-reason").value.trim();
   
   if (!service) {
     alert("Por favor, selecciona el servicio que requieres agendar.");
+    return;
+  }
+
+  if (!name || !whatsapp || !email) {
+    alert("Por favor, ingresa tu nombre, WhatsApp y correo electrónico.");
     return;
   }
   
@@ -901,6 +976,7 @@ function switchAdminTab(tabName) {
 
 // Renderizar panel central y recalcular estadísticas reales
 function renderAdminPanel() {
+  if (!isAdminAuthenticated()) return;
   const appointments = JSON.parse(localStorage.getItem(STORAGE_KEYS.APPOINTMENTS) || "[]");
   const patients = JSON.parse(localStorage.getItem(STORAGE_KEYS.PATIENTS) || "[]");
   
@@ -1365,6 +1441,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("booking-form");
   if (bookingForm) {
     bookingForm.addEventListener("submit", handleBookingSubmit);
+  }
+
+  const adminLoginForm = document.getElementById("admin-login-form");
+  if (adminLoginForm) {
+    adminLoginForm.addEventListener("submit", handleAdminLogin);
+  }
+
+  const adminLogoutBtn = document.getElementById("admin-logout-btn");
+  if (adminLogoutBtn) {
+    adminLogoutBtn.addEventListener("click", logoutAdmin);
   }
   
   // 7. Modals close listeners
